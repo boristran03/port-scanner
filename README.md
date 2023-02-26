@@ -1,1 +1,1 @@
-Command: cargo run -- <dns> <start-port> <end-port>
+Command: cargo run -- {dns} {start-port} {end-port}
