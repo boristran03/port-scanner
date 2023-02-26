@@ -17,16 +17,13 @@ fn main() {
 
     for port in port_list {
         for target in resolve_domain(hostname, &port) {
-            match scan_port(&target, port) {
-                Ok(_) => {
-                    let target_ip = Box::new(target.to_string());
-                    if!(port_opened.contains_key(target_ip.as_str())) {
-                        port_opened.insert(target_ip.to_string(), Vec::new());
-                    }
-                    let ports = port_opened.get_mut(target_ip.as_str()).unwrap();
-                    ports.push(port);
-                },
-                Err(_) => continue,
+            if scan_port(&target, port).is_ok() {
+                let target_ip = Box::new(target.to_string());
+                if!(port_opened.contains_key(target_ip.as_str())) {
+                    port_opened.insert(target_ip.to_string(), Vec::new());
+                }
+                let ports = port_opened.get_mut(target_ip.as_str()).unwrap();
+                ports.push(port);
             }
         }
     }
