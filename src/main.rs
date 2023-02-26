@@ -12,22 +12,18 @@ fn main() {
     let start_port: i32 = args[2].parse().unwrap();
     let end_port: i32 = args[3].parse().unwrap();
 
-    let mut port_opened: HashMap<String, Vec<i32>> = HashMap::new();
+    let mut port_opened = Vec::new();
     let port_list = start_port..=end_port;
 
     for port in port_list {
         for target in resolve_domain(hostname, &port) {
             if scan_port(&target, port).is_ok() {
-                let target_ip = Box::new(target.to_string());
-                if!(port_opened.contains_key(target_ip.as_str())) {
-                    port_opened.insert(target_ip.to_string(), Vec::new());
-                }
-                let ports = port_opened.get_mut(target_ip.as_str()).unwrap();
-                ports.push(port);
+                port_opened.push(target);
             }
         }
     }
 
+    port_opened.sort();
     println!("{:#?}", port_opened);
 }
 
